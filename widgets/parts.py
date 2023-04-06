@@ -5,6 +5,13 @@ from PIL import Image, ImageTk
 class TopFrame(ttk.LabelFrame):
     def __init__(self,master,**kwargs):
         super().__init__(master,**kwargs)
+
+        #using ttk.Style to change the style of the self widget
+        ttkStyle = ttk.Style()
+        ttkStyle.theme_use('default')
+        #ttkStyle change ttk.LabelFrame border width
+        ttkStyle.configure('TLabelframe',borderwidth=0)
+
         flowerImage1 = Image.open("./images/flower1.png")
         self.flowerPhoto1 = ImageTk.PhotoImage(flowerImage1)
         self.canvas = tk.Canvas(self, width=173, height=200)
@@ -27,3 +34,28 @@ class TopFrame(ttk.LabelFrame):
         self.scrollbar.pack(side='bottom', fill='x')
         self.canvas.configure(xscrollcommand=self.scrollbar.set)
         self.canvas.configure(scrollregion=(0,0,500,200))
+
+class MedianFrame(ttk.LabelFrame):
+    def __init__(self,master,**kwargs):
+        super().__init__(master,**kwargs)
+        self.w =master
+        #ttk.Style change ttk.Radiobutton shape(改變radiobutton圖形)
+        ttkStyle = ttk.Style()
+        ttkStyle.theme_use('clam')
+        
+        radionFrame = ttk.LabelFrame(self, text='Radio Buttons')
+        radionFrame.pack(side=tk.LEFT, padx=10, pady=10)
+        self.radioStringVar = tk.StringVar()
+        self.radiobutton1 = ttk.Radiobutton(radionFrame, text='Option 1',variable=self.radioStringVar, value="red",command=self.radioEvent)
+        self.radiobutton1.pack()
+        self.radiobutton2 = ttk.Radiobutton(radionFrame, text='Option 2',variable=self.radioStringVar, value="blue",command=self.radioEvent)
+        self.radiobutton2.pack()
+        self.radiobutton3 = ttk.Radiobutton(radionFrame, text='Option 3', variable=self.radioStringVar, value="green",command=self.radioEvent)
+        self.radiobutton3.pack()
+        self.radiobutton4 = ttk.Radiobutton(radionFrame, text='Option 4', variable=self.radioStringVar, value="yellow",command=self.radioEvent)
+        self.radiobutton4.pack()
+        self.radioStringVar.set('red')
+        
+    
+    def radioEvent(self):
+        self.w.radioButtonEvent0fMedianFrame(self.radioStringVar.get())
