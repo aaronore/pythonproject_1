@@ -1,5 +1,5 @@
 import tkinter as tk
-from parts import TopFrame,MedianFrame
+from parts import TopFrame,MedianFrame,BottomFrame
 
 
 
@@ -10,9 +10,16 @@ class Window(tk.Tk):
         topFrame.pack()
         medianFrame =MedianFrame(self,borderwidth=0)
         medianFrame.pack(fill=tk.X)
+        bottomFrame = BottomFrame(self)
+        bottomFrame.pack(fill=tk.X)
 
-    def radioButtonEvent0fMedianFrame(self,radioButtonValue):
+    #在window中建立知道radioButton被按的evnet
+    def radioButtonEventOfMedianFrame(self,radioButtonValue):
         print(radioButtonValue)
+
+    #在window中建立知道listBox被按的evnet
+    def listBoxEventOfBottonFrame(self,listBoxValue):
+        print(listBoxValue)
 
 def main():
     window = Window()

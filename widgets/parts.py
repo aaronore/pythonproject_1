@@ -75,10 +75,52 @@ class MedianFrame(ttk.LabelFrame):
         
 
     def radioEvent(self):
-        self.w.radioButtonEvent0fMedianFrame(self.radioStringVar.get())
+        self.w.radioButtonEventOfMedianFrame(self.radioStringVar.get())
 
     def checkEvent(self):
         print(self.checkStringVar1.get())
         print(self.checkStringVar2.get())
         print(self.checkStringVar3.get())
         print(self.checkStringVar4.get())
+
+class BottomFrame(ttk.LabelFrame):
+    def __init__(self,master,**kwargs):
+        super().__init__(master,**kwargs)
+        self.w = master
+        listFrame = ttk.LabelFrame(self,text="List Box")
+        listFrame.pack(side=tk.LEFT,padx=10,pady=10)
+        list = tk.Listbox(listFrame,height=6,width=10)
+        list.pack(side=tk.LEFT)
+        self.data = []
+        for month in range(1,13):
+            self.data.append(f"{month}月")
+
+        for item in self.data:
+            list.insert(tk.END,item)
+
+        scrollBar = ttk.Scrollbar(listFrame,command=list.yview)
+        scrollBar.pack(side=tk.RIGHT,fill=tk.Y)
+        list.configure(yscrollcommand=scrollBar.set)
+        list.bind('<<ListboxSelect>>', self.items_selected)
+
+        comboBoxValue = ('請選擇月份',
+                         'January',
+                         'February',
+                         'March',
+						 'April',
+						 'May',
+						 'June',
+						 'July',
+						 'August',
+						 'September',
+						 'October',
+						 'November',
+						 'December'
+                         )
+
+    def items_selected(self,event):
+        listbox = event.widget
+        #selectedIndex -> tuple
+        (selectedIndex,) = listbox.curselection()        
+        selectedValue = self.data[selectedIndex]
+        self.w.listBoxEventOfBottonFrame(selectedValue)
