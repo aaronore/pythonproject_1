@@ -21,6 +21,9 @@ class Window(tk.Tk):
     def listBoxEventOfBottonFrame(self,listBoxValue):
         print(listBoxValue)
 
+    def comboBoxEventOfBottonFrame(self,comboValue):
+        print(comboValue)
+
 def main():
     window = Window()
     window.title("Widgets")
