@@ -8,18 +8,31 @@ from tkinter import ttk
 class Window(tk.Tk):
     def __init__(self):
         super().__init__()
+
+#top_wrapperFrame=================
+        top_wrapperFrame = ttk.Frame(self)
+        top_wrapperFrame.pack(fill=tk.X)
+
+#topFrame_start------------------------------------------
         topFrame = ttk.LabelFrame(self,text="台北市行政區")
         length = len(datasource.sarea_list)
         self.radioStringVar = tk.StringVar()
         for i in range(length):
             cols = i % 3
             rows = i //3
-            ttk.Radiobutton(topFrame,text=datasource.sarea_list[i],value=datasource.sarea_list[i],variable=self.radioStringVar,command=self.radio_Event).grid(column=cols,row=rows,sticky=tk.W,padx=10,pady=10)
+            ttk.Radiobutton(topFrame,text=datasource.sarea_list[i],value=datasource.sarea_list[i],variable=self.radioStringVar,command=self.radio_Event).grid(column=cols,row=rows,sticky=tk.W,padx=10,pady=10)    
         topFrame.pack()
         self.radioStringVar.set('信義區')
         self.area_data = datasource.getInfoFromArea('信義區')
+#topFrame_end----------------------------------------------------
 
-        bottomFrame = ttk.LabelFrame(self,text="self.radioStringVar.get()")
+#warningFrame_start-----------------------------------------------
+        sbi_warningFrame = ttk.LabelFrame(top_wrapperFrame,text="車位目前不足站點")
+        warning_sbi_Frame = ttk.Frame
+        warning__sbi_Frame.pack()
+        warningFrame.pack(side=tk.LEFT)
+
+        bottomFrame = ttk.LabelFrame(self,text=self.radioStringVar.get())
         bottomFrame.pack()
 
         columns = ('#1', '#2', '#3', '#4', '#5', '#6', '#7')
@@ -38,15 +51,15 @@ class Window(tk.Tk):
         self.tree.column("#6", minwidth=0, width=250)
         self.tree.heading('#7', text='狀態')
         self.tree.column("#7", minwidth=0, width=30)
-        self.tree.pack()
+        self.tree.pack(side=tk.LEFT,fill=tk.Y)
 
         for item in self.area_data:
             self.tree.insert('',tk.END,values=[item['sna'][11:],item['mday'],item['tot'],item['sbi'],item['bemp'],item['ar'],item['act']])
 
 
         scrollbar = ttk.Scrollbar(bottomFrame,command=self.tree.yview) 
-        scrollbar.pack(side=tk.RIGHT,fill=tk.Y)
-        self.tree.configure(yscrollcommand=scrollbar.set)
+        scrollbar.pack(side=tk.RIGHT,fill=tk.Y) #跟第41行self.tree.pack一個靠右一個靠左
+        self.tree.configure(yscrollcommand=scrollbar.set)  #self.tree.config跟self.tree['yscrollcommand'] 三種寫法都可
 
     def radio_Event(self):
         area_name = self.radioStringVar.get()
