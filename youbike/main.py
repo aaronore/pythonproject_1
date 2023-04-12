@@ -1,3 +1,6 @@
+'''
+這是youbike
+'''
 import datasource
 import tkinter as tk
 from tkinter import ttk
