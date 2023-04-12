@@ -62,12 +62,14 @@ class Window(tk.Tk):
         self.tree.configure(yscrollcommand=scrollbar.set)  #self.tree.config跟self.tree['yscrollcommand'] 三種寫法都可
 
     def radio_Event(self):
-        area_name = self.radioStringVar.get()
-        self.area_data = datasource.getInfoFromArea(area_name)
+        
+        
         for item in self.tree.get_children():
             self.tree.delete(item)
-
+        area_name = self.radioStringVar.get()
+        self.area_data = datasource.getInfoFromArea(area_name)
         for item in self.area_data:
+            #print(item) 印看
             self.tree.insert('',tk.END,values=[item['sna'][11:],item['mday'],item['tot'],item['sbi'],item['bemp'],item['ar'],item['act']])
 
         
