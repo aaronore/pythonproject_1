@@ -19,7 +19,7 @@ class Window(tk.Tk):
 #topFrame_start===================
 
 #topFrame_start------------------------------------------
-        topFrame = ttk.LabelFrame(self,text="台北市行政區")
+        topFrame = ttk.LabelFrame(top_wrapperFrame,text="台北市行政區")  #top_wrapperFrame才會對，剛剛self往下擠
         length = len(datasource.sarea_list)
         self.radioStringVar = tk.StringVar()
         for i in range(length):
