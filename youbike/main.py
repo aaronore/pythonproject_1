@@ -4,7 +4,9 @@
 import datasource
 import tkinter as tk
 from tkinter import ttk
+from PIL import Image, ImageTk
 import datetime
+from tkinter.simpledialog import askinteger
 
 sbi_numbers =3
 bemp_numbers =3
@@ -12,9 +14,34 @@ bemp_numbers =3
 class Window(tk.Tk):
     def __init__(self):
         super().__init__()
+         # add menubar that contains a menu
+        self.menubar = tk.Menu(self)
+        self.config(menu=self.menubar)
+        # add command menu in menubar
+
+        self.command_menu = tk.Menu(self.menubar)
+        self.command_menu.add_command(label="設定", command=self.menu_setting_click)
+        self.command_menu.add_command(label="離開", command=self.destroy)
+        self.menubar.add_cascade(label="File", menu=self.command_menu)
+
+
+
+
+ #main Frame
+        mainFrame = ttk.Frame(self)
+        mainFrame.pack(padx=30,pady=50)
+
+#logoLabel top of top_wrapperFrame
+        logoImage = Image.open('banner.png')
+        resizeImage = logoImage.resize((540,136),Image.LANCZOS)
+        self.logoTkimage = ImageTk.PhotoImage(resizeImage)
+        logoLabel = ttk.Label(mainFrame,image=self.logoTkimage)
+        logoLabel.pack(pady=(0,50))
+
+
 
 #top_wrapperFrame=================
-        top_wrapperFrame = ttk.Frame(self)
+        top_wrapperFrame = ttk.Frame(mainFrame)
         top_wrapperFrame.pack(fill=tk.X)
 #topFrame_start===================
 
@@ -73,7 +100,7 @@ class Window(tk.Tk):
         #Get current datetime
         now =datetime.datetime.now()
         nowString = now.strftime("%Y-%m-%d %H:%M:%S")
-        self.bottomFrame = ttk.LabelFrame(self,text=f"信義區{nowString}")
+        self.bottomFrame = ttk.LabelFrame(mainFrame,text=f"信義區{nowString}")
         self.bottomFrame.pack()
 
         columns = ('#1', '#2', '#3', '#4', '#5', '#6', '#7')
@@ -94,9 +121,12 @@ class Window(tk.Tk):
         self.tree.column("#7", minwidth=0, width=30)
         self.tree.pack(side=tk.LEFT)
 
+        #self.tree, addItem
         for item in self.area_data:
-            self.tree.insert('',tk.END,values=[item['sna'][11:],item['mday'],item['tot'],item['sbi'],item['bemp'],item['ar'],item['act']])
+            self.tree.insert('',tk.END,values=[item['sna'][11:],item['mday'],item['tot'],item['sbi'],item['bemp'],item['ar'],item['act']],tags=item['sna'])
 
+        #self .tree bind event
+        self.tree.bind('<<TreeviewSelect>>',self.treeSelected)
 
         scrollbar = ttk.Scrollbar(self.bottomFrame,command=self.tree.yview) 
         scrollbar.pack(side=tk.RIGHT,fill=tk.Y) #跟第41行self.tree.pack一個靠右一個靠左
@@ -121,6 +151,26 @@ class Window(tk.Tk):
             self.tree.move(k, '', index)
         self.tree.heading(col, command=lambda: self.sortby(col, 0))
     '''
+    def treeSelected(self,event):
+        selectedTree = event.widget
+        itemTag = selectedTree.selection()[0]
+        #print(selectedTree.item(itemTag))   印出來看這是什麼--->是[] list
+        itemDic = selectedTree.item(itemTag)
+        siteName = itemDic['tags'][0]
+        for item in self.area_data:
+            if siteName == item['sna']:
+                print(item)
+                break 
+
+
+    def menu_setting_click(self):
+        global sbi_numbers,bemp_numbers
+        retVal = askinteger(f"目前設定不足數量:{sbi_numbers}",
+                    "請輸入不足可借可還數量0~5",
+                    minvalue=0, maxvalue=5)
+        print(retVal)
+        sbi_numbers = retVal
+        bemp_numbers = retVal
 
     def radio_Event(self):
         #Get current datetime
@@ -157,7 +207,7 @@ class Window(tk.Tk):
         # Display data in tree view
         for item in self.area_data:
             #print(item) 印看
-            self.tree.insert('',tk.END,values=[item['sna'][11:],item['mday'],item['tot'],item['sbi'],item['bemp'],item['ar'],item['act']])
+            self.tree.insert('',tk.END,values=[item['sna'][11:],item['mday'],item['tot'],item['sbi'],item['bemp'],item['ar'],item['act']],tags=item['sna'])
 
         for item in self.sbi_warning_data:
             self.sbi_tree.insert('',tk.END,values=[item['sna'][11:],item['sbi'],item['bemp']])
