@@ -7,6 +7,7 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 import datetime
 from tkinter.simpledialog import askinteger
+from messageWindow import MapDisplay
 
 sbi_numbers =3
 bemp_numbers =3
@@ -153,15 +154,19 @@ class Window(tk.Tk):
     '''
     def treeSelected(self,event):
         selectedTree = event.widget
+        if len(selectedTree.selection()) == 0 : return
         itemTag = selectedTree.selection()[0]
         #print(selectedTree.item(itemTag))   印出來看這是什麼--->是[] list
         itemDic = selectedTree.item(itemTag)
         siteName = itemDic['tags'][0]
         for item in self.area_data:
             if siteName == item['sna']:
-                print(item)
+                selected_data = item
                 break 
 
+        #顯示地圖的window
+        mapDisplay=MapDisplay(self,selected_data)
+        mapDisplay.transient(self)
 
     def menu_setting_click(self):
         global sbi_numbers,bemp_numbers
