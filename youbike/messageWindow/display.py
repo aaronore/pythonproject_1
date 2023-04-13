@@ -21,6 +21,7 @@ class MapDisplay(Dialog):
         map_widget.set_zoom(20) #設定顯示大小
         marker_1.set_text(self.site_info['sna'][11:])
 
+    #override
     def buttonbox(self):
         '''add standard button box.
         override if you do not want the standard buttons

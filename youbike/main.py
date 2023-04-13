@@ -24,7 +24,7 @@ class Window(tk.Tk):
         self.command_menu.add_command(label="設定", command=self.menu_setting_click)
         self.command_menu.add_command(label="離開", command=self.destroy)
         self.menubar.add_cascade(label="File", menu=self.command_menu)
-
+        self.menubar.add_cascade(label="搜尋", menu=self.command_menu)
 
 
 
@@ -34,7 +34,7 @@ class Window(tk.Tk):
 
 #logoLabel top of top_wrapperFrame
         logoImage = Image.open('banner.png')
-        resizeImage = logoImage.resize((540,136),Image.LANCZOS)
+        resizeImage = logoImage.resize((675,170),Image.LANCZOS)
         self.logoTkimage = ImageTk.PhotoImage(resizeImage)
         logoLabel = ttk.Label(mainFrame,image=self.logoTkimage)
         logoLabel.pack(pady=(0,50))
@@ -166,7 +166,7 @@ class Window(tk.Tk):
 
         #顯示地圖的window
         mapDisplay=MapDisplay(self,selected_data)
-        mapDisplay.transient(self)
+        #mapDisplay.transient(self)
 
     def menu_setting_click(self):
         global sbi_numbers,bemp_numbers
