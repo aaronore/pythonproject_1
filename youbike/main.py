@@ -24,6 +24,7 @@ class Window(tk.Tk):
         self.command_menu.add_command(label="設定", command=self.menu_setting_click)
         self.command_menu.add_command(label="離開", command=self.destroy)
         self.menubar.add_cascade(label="File", menu=self.command_menu)
+        #加搜尋自己做(下面還要def())
         self.menubar.add_cascade(label="搜尋", menu=self.command_menu)
 
 
